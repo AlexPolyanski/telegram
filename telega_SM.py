@@ -5,7 +5,6 @@ import openpyxl
 from datetime import datetime
 
     
-token = "5734991862:AAGVxppmtLjCTIMg6bN6TolKjgGl3wgdgSQ"
 my_bot = telebot.TeleBot(token)
 
 class indications():
