@@ -23,6 +23,7 @@ current_indi = indications(addr="", appart="", hot="", cold="", elct="")
 @my_bot.message_handler(commands=['start'])
 def welcome_message(message):
    markup = address_keyboard(message, first_run=True)
+   my_bot.send_message(message.chat.id, text='Ващ айди ' + str(message.from_user.id))
    my_bot.send_message(message.chat.id, text='Выберете адрес:', reply_markup=markup)
 
 # text handler
