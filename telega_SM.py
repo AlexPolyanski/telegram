@@ -2,6 +2,7 @@ import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from telebot.types import CallbackQuery
 import openpyxl
+import os
 from datetime import datetime
 
 token = "5734991862:AAGVxppmtLjCTIMg6bN6TolKjgGl3wgdgSQ"
@@ -56,16 +57,16 @@ def menu_navigate(callback_obj: CallbackQuery):
     current_level_function = levels[current_level]
     current_level_function(callback_obj.message, first_run=False)
       
-# stop button
+# write in excel file
 def make_rec(message, **kwargs):
-    path = 'D:\coding\Python\\'
+    path = os.path.dirname(os.path.abspath(__file__))
     my_bot.send_message(message.chat.id, 'Пока!')
-    wb = openpyxl.load_workbook(filename=path+'sample.xlsx')
+    wb = openpyxl.load_workbook(filename=path+'\sample.xlsx')
     ws = wb[current_indi.addr]
     time = str(datetime.now().strftime('%d.%m.%Y в %H:%M:%S'))
     user = str(message.from_user.id)
     ws.append([f'{current_indi.addr}, кв. {current_indi.appart}', f'{current_indi.hot}', f'{current_indi.cold}', f'{current_indi.elct}', time, user])
-    wb.save(path+'sample.xlsx')
+    wb.save(path+'\sample.xlsx')
 
 @my_bot.message_handler(commands=['stop'])
 def stop_bot(message, **kwargs):
