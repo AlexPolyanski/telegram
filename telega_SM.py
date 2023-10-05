@@ -1,3 +1,4 @@
+# добавить reply_to_message_id для удаления сообщений самого пользователя?? 
 import os
 from datetime import datetime
 import telebot
@@ -33,19 +34,16 @@ class indications():
 def welcome_message(message):
     current_indi = indications(addr="", appart="", hot="", cold="", elct="", user_id=f'{message.from_user.first_name} {message.from_user.last_name} ID {message.from_user.id}')
     markup = address_keyboard(message, first_run=True)
-    my_bot.send_message(message.chat.id, text=f'User ID {message.chat.id}')
     users[str(message.chat.id)] = current_indi
     my_bot.send_message(message.chat.id, text='Выберете адрес:', reply_markup=markup)
 
+
 # text handler
-
-
 @my_bot.message_handler(content_types=['text'])
 def addr_input(message):
     pass
 
 # Обработчик нажатий всех инлайн-кнопок
-
 
 @my_bot.callback_query_handler(func=lambda call: True)
 # навигация по меню
@@ -63,9 +61,6 @@ def menu_navigate(callback_obj: CallbackQuery):
         "0": address_keyboard,
         "1": appart_input,
         "2": hot_keyboard,
-        "3": cold_keyboard,
-        "4": elct_keyboard,
-        "5": confirm_keyboard,
         "6": make_rec
     }
     current_level_function = levels[current_level]
@@ -137,8 +132,7 @@ def hot_keyboard(message, **kwargs):
     current_level = 2
     old_message = my_bot.edit_message_text(
         chat_id=message.chat.id, message_id=message.id, text='Введите показания cчетчика горячей воды:')
-    my_bot.register_next_step_handler(
-        message, user_text_input, current_level, old_message)
+    my_bot.register_next_step_handler(message, user_text_input, current_level, old_message)
 
 # запрос на ввод показаний ХВ
 
@@ -147,8 +141,7 @@ def cold_keyboard(message, **kwargs):
     current_level = 3
     old_message = my_bot.send_message(
         chat_id=message.chat.id, text='Введите показания cчетчика холодной воды:')
-    my_bot.register_next_step_handler(
-        message, user_text_input, current_level, old_message)
+    my_bot.register_next_step_handler(message, user_text_input, current_level, old_message)
 
 # запрос на ввод показаний электро
 
@@ -157,8 +150,7 @@ def elct_keyboard(message, **kwargs):
     current_level = 4
     old_message = my_bot.send_message(
         chat_id=message.chat.id, text='Введите показания электро-счетчика:')
-    my_bot.register_next_step_handler(
-        message, user_text_input, current_level, old_message)
+    my_bot.register_next_step_handler(message, user_text_input, current_level, old_message)
 
 # клавиатура передачи показаний
 
@@ -192,8 +184,7 @@ def user_text_input(message, current_level, old_message):
 
 def gen_markup(list_of_buttons, rowz, level):
     inline_key = InlineKeyboardMarkup(row_width=rowz)
-    inline_key.add(*[InlineKeyboardButton(text=name,
-                   callback_data=f"{level}_{name}") for name in list_of_buttons])
+    inline_key.add(*[InlineKeyboardButton(text=name, callback_data=f"{level}_{name}") for name in list_of_buttons])
     return inline_key
 
 
